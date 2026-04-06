@@ -126,16 +126,31 @@ export default function Footer() {
           ))}
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="font-space-mono text-[10px] tracking-wider"
-          style={{ color: 'var(--muted)', opacity: 0.4 }}
+          className="flex flex-col items-center gap-1"
         >
-          Hecho con ❤️ · LZT '26
-        </motion.p>
+          <p className="font-inter text-sm font-medium flex items-center gap-2" style={{ color: 'var(--muted)' }}>
+            Hecho con{' '}
+            <motion.span
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+              className="inline-block text-red-400 text-base"
+            >
+              ❤️
+            </motion.span>
+            {' '}por{' '}
+            <span className="font-playfair font-bold italic" style={{ color: 'var(--primary)' }}>
+              Gonzi
+            </span>
+          </p>
+          <p className="font-space-mono text-[10px] tracking-wider" style={{ color: 'var(--muted)', opacity: 0.4 }}>
+            LZT '26
+          </p>
+        </motion.div>
       </div>
     </footer>
   );

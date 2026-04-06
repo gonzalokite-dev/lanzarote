@@ -92,16 +92,35 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
         onClick={() => setIsOpen(!isOpen)}
       >
         {/* Hero image */}
-        <div className="relative h-44 sm:h-56 overflow-hidden">
+        <div className="relative h-52 sm:h-64 overflow-hidden group/img">
           <Image
             src={day.heroImage}
             alt={day.title}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-[1200ms] ease-out scale-105 group-hover/img:scale-110"
             loading="lazy"
           />
-          <div className="absolute inset-0 hero-overlay" />
+          {/* Rich gradient overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(
+                to bottom,
+                rgba(10,10,10,0.05) 0%,
+                rgba(10,10,10,0.15) 35%,
+                rgba(10,10,10,0.85) 100%
+              )`,
+            }}
+          />
+          {/* Subtle color tint */}
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              background: 'linear-gradient(135deg, rgba(232,98,42,0.2) 0%, rgba(45,212,191,0.1) 100%)',
+              mixBlendMode: 'overlay',
+            }}
+          />
 
           {/* Day badge */}
           <div

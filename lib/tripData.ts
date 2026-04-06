@@ -25,7 +25,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-19',
     label: 'SAB 19 ABR',
     title: 'Llegada · Teguise',
-    heroImage: 'https://images.unsplash.com/photo-1589053739346-2a4a5e1e3e28?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1614026480209-cd9934144671?w=1200&q=80',
     coordinates: { lat: 29.06, lng: -13.56 },
     activities: [
       { time: '15:00', category: 'hotel', name: 'Check-in Barceló Teguise Beach', description: 'Adults only resort en Costa Teguise' },
@@ -38,7 +38,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-20',
     label: 'DOM 20 ABR',
     title: 'Mercado + Norte Volcánico',
-    heroImage: 'https://images.unsplash.com/photo-1518704618243-b719e5d5f2b8?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?w=1200&q=80',
     coordinates: { lat: 29.157, lng: -13.432 },
     activities: [
       { time: '09:00', category: 'activity', name: 'Mercado Dominical de Teguise', description: 'El mercado más grande de Canarias. Artesanía, gastronomía local, música' },
@@ -52,7 +52,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-21',
     label: 'LUN 21 ABR',
     title: 'Timanfaya · El Volcán',
-    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1200&q=80',
     coordinates: { lat: 29.0157, lng: -13.7829 },
     activities: [
       { time: '09:00', category: 'activity', name: 'Parque Nacional Timanfaya', description: 'Salida temprana obligatoria. Paisaje lunar, géiseres geotérmicos, bus tour incluido. Reserva online ~30€', phone: '+34 928 11 80 42' },
@@ -65,7 +65,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-22',
     label: 'MAR 22 ABR',
     title: 'Manrique · Arte y Volcán',
-    heroImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1590065707046-4db8e6a2c7d9?w=1200&q=80',
     coordinates: { lat: 29.002, lng: -13.5475 },
     activities: [
       { time: '10:00', category: 'culture', name: 'Fundación César Manrique', description: 'Casa-estudio construida sobre 5 burbujas volcánicas. El legado artístico de Lanzarote. Entrada ~10€', phone: '+34 928 84 31 38' },
@@ -79,7 +79,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-23',
     label: 'MIÉ 23 ABR',
     title: 'Playas de Papagayo',
-    heroImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200&q=80',
     coordinates: { lat: 28.8426, lng: -13.7881 },
     activities: [
       { time: '09:30', category: 'beach', name: 'Playas de Papagayo', description: 'Las mejores calas de Lanzarote. Arena blanca, agua cristalina, entorno virgen. Entrada al parque natural 3€. Lleva agua y comida' },
@@ -93,7 +93,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-24',
     label: 'JUE 24 ABR',
     title: 'Puerto del Carmen',
-    heroImage: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1567225557594-88887a4b2b16?w=1200&q=80',
     coordinates: { lat: 28.921, lng: -13.663 },
     activities: [
       { time: '10:00', category: 'beach', name: 'Playa Grande (Puerto del Carmen)', description: 'La playa más larga de Lanzarote. 3.5km de arena dorada, aguas tranquilas, paseo marítimo' },
@@ -108,7 +108,7 @@ export const tripDays: TripDay[] = [
     date: '2026-04-25',
     label: 'VIE 25 ABR',
     title: 'Última Mañana · Vuelta',
-    heroImage: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80',
     coordinates: { lat: 29.0588, lng: -13.5607 },
     activities: [
       { time: '09:00', category: 'activity', name: 'Desayuno en el hotel', description: 'Última mañana. Disfruta la terraza y la piscina' },
