@@ -13,11 +13,13 @@ interface CustomItem {
 export default function Checklist() {
   const [checked, setChecked] = useLocalStorage<Record<string, boolean>>('checklist', {});
   const [customItems, setCustomItems] = useLocalStorage<CustomItem[]>('checklist_custom', []);
+  const [deletedDefaults, setDeletedDefaults] = useLocalStorage<string[]>('checklist_deleted', []);
   const [isOpen, setIsOpen] = useState(false);
   const [newItem, setNewItem] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const allItems = [...checklistItems, ...customItems];
+  const visibleDefaults = checklistItems.filter((i) => !deletedDefaults.includes(i.id));
+  const allItems = [...visibleDefaults, ...customItems];
   const completedCount = allItems.filter((item) => checked[item.id]).length;
   const progress = allItems.length > 0 ? Math.round((completedCount / allItems.length) * 100) : 0;
 
@@ -34,8 +36,12 @@ export default function Checklist() {
     inputRef.current?.focus();
   };
 
-  const removeCustom = (id: string) => {
-    setCustomItems((prev) => prev.filter((i) => i.id !== id));
+  const removeItem = (id: string, isDefault: boolean) => {
+    if (isDefault) {
+      setDeletedDefaults((prev) => [...prev, id]);
+    } else {
+      setCustomItems((prev) => prev.filter((i) => i.id !== id));
+    }
     setChecked((prev) => { const next = { ...prev }; delete next[id]; return next; });
   };
 
@@ -162,13 +168,14 @@ export default function Checklist() {
               {/* Items list */}
               <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-2">
                 {/* Default items */}
-                {checklistItems.map((item, i) => (
+                {visibleDefaults.map((item, i) => (
                   <CheckRow
                     key={item.id}
                     id={item.id}
                     label={item.label}
                     checked={!!checked[item.id]}
                     onToggle={() => toggle(item.id)}
+                    onDelete={() => removeItem(item.id, true)}
                     delay={i * 0.03}
                   />
                 ))}
@@ -190,9 +197,8 @@ export default function Checklist() {
                         label={item.label}
                         checked={!!checked[item.id]}
                         onToggle={() => toggle(item.id)}
-                        onDelete={() => removeCustom(item.id)}
+                        onDelete={() => removeItem(item.id, false)}
                         delay={i * 0.03}
-                        isCustom
                       />
                     ))}
                   </>
@@ -243,11 +249,11 @@ export default function Checklist() {
 }
 
 function CheckRow({
-  id, label, checked, onToggle, onDelete, delay = 0, isCustom = false,
+  id, label, checked, onToggle, onDelete, delay = 0,
 }: {
   id: string; label: string; checked: boolean;
   onToggle: () => void; onDelete?: () => void;
-  delay?: number; isCustom?: boolean;
+  delay?: number;
 }) {
   return (
     <motion.div
@@ -283,7 +289,7 @@ function CheckRow({
         {label}
       </span>
 
-      {isCustom && onDelete && (
+      {onDelete && (
         <button
           onClick={onDelete}
           aria-label="Eliminar"

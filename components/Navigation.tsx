@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 
 interface NavigationProps {
   activeFilter: string;
@@ -21,6 +21,8 @@ const filters = [
 export default function Navigation({ activeFilter, setActiveFilter, isDark, toggleTheme }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 40 });
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60);
@@ -28,8 +30,33 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
+  const handleFilter = (id: string) => {
+    setActiveFilter(id);
+    // scroll to timeline so user sees the effect
+    if (id !== 'all') {
+      setTimeout(() => {
+        document.getElementById('timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+  };
+
   return (
     <>
+      {/* ── Scroll progress bar ── */}
+      <motion.div
+        style={{
+          scaleX,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '3px',
+          background: 'linear-gradient(to right, var(--primary), var(--secondary))',
+          transformOrigin: '0%',
+          zIndex: 100,
+        }}
+      />
+
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -40,29 +67,29 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className="flex items-center gap-2.5 shrink-0 group"
+          >
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
               <ellipse cx="14" cy="19" rx="11" ry="6" fill="rgba(232,98,42,0.15)" stroke="#e8622a" strokeWidth="1.2"/>
               <path d="M14 4 L8 19 L14 16 L20 19 Z" fill="#e8622a" opacity="0.85"/>
               <path d="M11 12 L14 4 L17 12" fill="#c94d18"/>
               <circle cx="14" cy="19" r="2" fill="#2dd4bf"/>
             </svg>
-            <span className="font-space-mono text-sm font-bold tracking-widest" style={{ color: 'var(--text)' }}>
+            <span className="font-space-mono text-sm font-bold tracking-widest transition-opacity group-hover:opacity-70" style={{ color: 'var(--text)' }}>
               LANZAROUTE <span style={{ color: 'var(--primary)' }}>'26</span>
             </span>
-          </div>
+          </a>
 
           {/* Desktop filter pills */}
           <div className="hidden md:flex items-center gap-1 bg-black/20 rounded-full px-2 py-1.5 backdrop-blur-sm border border-white/5">
             {filters.map((f) => (
               <button
                 key={f.id}
-                onClick={() => setActiveFilter(f.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-space-mono font-bold tracking-wider transition-all duration-200 ${
-                  activeFilter === f.id
-                    ? 'text-[#0a0a0a]'
-                    : 'hover:bg-white/10'
-                }`}
+                onClick={() => handleFilter(f.id)}
+                className="px-3.5 py-1.5 rounded-full text-xs font-space-mono font-bold tracking-wider transition-all duration-200 hover:opacity-90"
                 style={{
                   background: activeFilter === f.id ? 'var(--primary)' : 'transparent',
                   color: activeFilter === f.id ? '#fff' : 'var(--muted)',
@@ -73,8 +100,22 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
             ))}
           </div>
 
-          {/* Right controls */}
+          {/* Right */}
           <div className="flex items-center gap-3">
+            {/* Active filter badge (mobile) */}
+            {activeFilter !== 'all' && (
+              <button
+                onClick={() => setActiveFilter('all')}
+                className="md:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-space-mono font-bold"
+                style={{ background: 'var(--primary)', color: '#fff' }}
+              >
+                {filters.find(f => f.id === activeFilter)?.label}
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            )}
+
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
@@ -83,7 +124,8 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
             >
               {isDark ? (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text)' }}>
-                  <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                  <circle cx="12" cy="12" r="5"/>
+                  <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
                   <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
                   <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
                   <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
@@ -95,7 +137,6 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
               )}
             </button>
 
-            {/* Hamburger (mobile) */}
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
@@ -103,7 +144,9 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
               style={{ border: '1px solid var(--border)' }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text)' }}>
-                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
               </svg>
             </button>
           </div>
@@ -137,7 +180,7 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07 }}
-                  onClick={() => { setActiveFilter(f.id); setMobileOpen(false); }}
+                  onClick={() => { handleFilter(f.id); setMobileOpen(false); }}
                   className="font-playfair text-3xl font-bold transition-colors duration-200"
                   style={{ color: activeFilter === f.id ? 'var(--primary)' : 'var(--text)' }}
                 >

@@ -23,7 +23,7 @@ export const tripDays: TripDay[] = [
   {
     day: 1,
     date: '2026-04-19',
-    label: 'SAB 19 ABR',
+    label: 'DOM 19 ABR',
     title: 'Llegada · Teguise',
     heroImage: 'https://images.unsplash.com/photo-AuhpVRdhAjQ?w=1200&q=80',
     coordinates: { lat: 29.06, lng: -13.56 },
@@ -36,7 +36,7 @@ export const tripDays: TripDay[] = [
   {
     day: 2,
     date: '2026-04-20',
-    label: 'DOM 20 ABR',
+    label: 'LUN 20 ABR',
     title: 'Mercado + Norte Volcánico',
     heroImage: 'https://images.unsplash.com/photo-5SQZRguWuDs?w=1200&q=80',
     coordinates: { lat: 29.157, lng: -13.432 },
@@ -50,7 +50,7 @@ export const tripDays: TripDay[] = [
   {
     day: 3,
     date: '2026-04-21',
-    label: 'LUN 21 ABR',
+    label: 'MAR 21 ABR',
     title: 'Timanfaya · El Volcán',
     heroImage: 'https://images.unsplash.com/photo-xUdO14yFDyc?w=1200&q=80',
     coordinates: { lat: 29.0157, lng: -13.7829 },
@@ -63,7 +63,7 @@ export const tripDays: TripDay[] = [
   {
     day: 4,
     date: '2026-04-22',
-    label: 'MAR 22 ABR',
+    label: 'MIÉ 22 ABR',
     title: 'Manrique · Arte y Volcán',
     heroImage: 'https://images.unsplash.com/photo-Y2x-lRYRtfQ?w=1200&q=80',
     coordinates: { lat: 29.002, lng: -13.5475 },
@@ -77,7 +77,7 @@ export const tripDays: TripDay[] = [
   {
     day: 5,
     date: '2026-04-23',
-    label: 'MIÉ 23 ABR',
+    label: 'JUE 23 ABR',
     title: 'Playas de Papagayo',
     heroImage: 'https://images.unsplash.com/photo-GhJG7ulTq_Y?w=1200&q=80',
     coordinates: { lat: 28.8426, lng: -13.7881 },
@@ -91,7 +91,7 @@ export const tripDays: TripDay[] = [
   {
     day: 6,
     date: '2026-04-24',
-    label: 'JUE 24 ABR',
+    label: 'VIE 24 ABR',
     title: 'Puerto del Carmen',
     heroImage: 'https://images.unsplash.com/photo-7CDuSaIXpqY?w=1200&q=80',
     coordinates: { lat: 28.921, lng: -13.663 },
@@ -106,7 +106,7 @@ export const tripDays: TripDay[] = [
   {
     day: 7,
     date: '2026-04-25',
-    label: 'VIE 25 ABR',
+    label: 'SAB 25 ABR',
     title: 'Última Mañana · Vuelta',
     heroImage: 'https://images.unsplash.com/photo-zGg9wUvROKo?w=1200&q=80',
     coordinates: { lat: 29.0588, lng: -13.5607 },
