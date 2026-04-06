@@ -2,10 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import ActivityItem from './ActivityItem';
 import { useLocalStorage } from '@/lib/useLocalStorage';
-import type { TripDay, Category } from '@/lib/tripData';
+import type { TripDay } from '@/lib/tripData';
 
 const categoryColors: Record<string, string> = {
   restaurant: '#f97316',
@@ -15,7 +14,18 @@ const categoryColors: Record<string, string> = {
   hotel: '#a78bfa',
 };
 
-const dayLabels = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SAB', 'DOM'];
+// Each day gets a unique volcanic gradient
+const dayGradients = [
+  'linear-gradient(135deg, #1a0800 0%, #3d1500 40%, #0d1a18 100%)', // D1 — deep lava dusk
+  'linear-gradient(135deg, #0a0a0a 0%, #1a1200 50%, #001a14 100%)', // D2 — cave night
+  'linear-gradient(135deg, #200800 0%, #5c1a00 45%, #1a0a00 100%)', // D3 — Timanfaya red
+  'linear-gradient(135deg, #080d0d 0%, #0d2020 50%, #1a1000 100%)', // D4 — Manrique teal
+  'linear-gradient(135deg, #001a1a 0%, #003333 45%, #001420 100%)', // D5 — Papagayo turquoise
+  'linear-gradient(135deg, #100800 0%, #2d1800 40%, #001418 100%)', // D6 — Puerto del Carmen
+  'linear-gradient(135deg, #0a0800 0%, #1f1000 40%, #0d1a1a 100%)', // D7 — farewell sunset
+];
+
+const dayEmojis = ['🛬', '🌋', '🔥', '🎨', '🏖️', '🌊', '✈️'];
 
 interface Props {
   day: TripDay;
@@ -32,6 +42,8 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
   const cardRef = useRef<HTMLDivElement>(null);
 
   const categories = Array.from(new Set(day.activities.map((a) => a.category)));
+  const gradient = dayGradients[(day.day - 1) % dayGradients.length];
+  const emoji = dayEmojis[(day.day - 1) % dayEmojis.length];
 
   const handleNotesChange = (val: string) => {
     setNotes(val);
@@ -56,11 +68,6 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
     }
   }, [saved]);
 
-  const filteredActivities = day.activities.filter((a) => {
-    if (activeFilter === 'all') return true;
-    return a.category === activeFilter;
-  });
-
   const hasFilterMatch = activeFilter === 'all' || day.activities.some((a) => a.category === activeFilter);
 
   const pad = 0.04;
@@ -82,9 +89,7 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
       id={`day-${day.day}`}
     >
       <div
-        className={`grad-border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-2px] ${
-          isHighlighted ? 'ring-2 ring-offset-2' : ''
-        }`}
+        className="grad-border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-2px]"
         style={{
           background: 'var(--card)',
           boxShadow: isHighlighted
@@ -93,83 +98,83 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
         }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {/* Hero image */}
-        <div className="relative h-52 sm:h-64 overflow-hidden group/img">
-          <Image
-            src={day.heroImage}
-            alt={day.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-[1200ms] ease-out scale-105 group-hover/img:scale-110"
-            loading="lazy"
-          />
-          {/* Rich gradient overlay */}
+        {/* ── Hero: gradient + typography ── */}
+        <div
+          className="relative h-44 sm:h-52 overflow-hidden flex flex-col justify-between p-5 sm:p-6"
+          style={{ background: gradient }}
+        >
+          {/* Noise texture */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 opacity-[0.06] pointer-events-none"
             style={{
-              background: `linear-gradient(
-                to bottom,
-                rgba(10,10,10,0.05) 0%,
-                rgba(10,10,10,0.15) 35%,
-                rgba(10,10,10,0.85) 100%
-              )`,
-            }}
-          />
-          {/* Subtle color tint */}
-          <div
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: 'linear-gradient(135deg, rgba(232,98,42,0.2) 0%, rgba(45,212,191,0.1) 100%)',
-              mixBlendMode: 'overlay',
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+              backgroundSize: '200px',
             }}
           />
 
-          {/* Day badge */}
-          <div
-            className="absolute top-4 left-4 font-space-mono text-xs font-bold px-3 py-1.5 rounded-full"
-            style={{ background: 'var(--primary)', color: '#fff' }}
-          >
-            D{day.day}
+          {/* Top row */}
+          <div className="relative flex items-center justify-between">
+            <span
+              className="font-space-mono text-xs font-bold px-3 py-1.5 rounded-full"
+              style={{ background: 'var(--primary)', color: '#fff' }}
+            >
+              D{day.day}
+            </span>
+            <div className="flex gap-1.5 flex-wrap justify-end">
+              {categories.map((cat) => (
+                <span
+                  key={cat}
+                  className="font-space-mono text-[10px] font-bold px-2 py-1 rounded-full"
+                  style={{
+                    background: `${categoryColors[cat]}22`,
+                    color: categoryColors[cat],
+                    border: `1px solid ${categoryColors[cat]}44`,
+                  }}
+                >
+                  {cat === 'restaurant' ? '🍽' : cat === 'beach' ? '🏖' : cat === 'culture' ? '🏛' : cat === 'activity' ? '⭐' : '🏨'}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Category pills */}
-          <div className="absolute top-4 right-4 flex gap-1.5 flex-wrap justify-end">
-            {categories.map((cat) => (
-              <span
-                key={cat}
-                className="font-space-mono text-[10px] font-bold px-2 py-1 rounded-full capitalize"
-                style={{
-                  background: `${categoryColors[cat]}22`,
-                  color: categoryColors[cat],
-                  border: `1px solid ${categoryColors[cat]}44`,
-                }}
-              >
-                {cat === 'restaurant' ? '🍽' : cat === 'beach' ? '🏖' : cat === 'culture' ? '🏛' : cat === 'activity' ? '⭐' : '🏨'}
-              </span>
-            ))}
+          {/* Center: big emoji + day number */}
+          <div className="relative flex-1 flex items-center justify-center">
+            <span
+              className="font-playfair font-black select-none pointer-events-none"
+              style={{
+                fontSize: 'clamp(4rem, 12vw, 7rem)',
+                color: 'rgba(255,255,255,0.06)',
+                lineHeight: 1,
+                letterSpacing: '-0.04em',
+                position: 'absolute',
+                right: '0.5rem',
+                bottom: '-0.5rem',
+              }}
+            >
+              {String(day.day).padStart(2, '0')}
+            </span>
+            <span style={{ fontSize: '2.5rem' }}>{emoji}</span>
           </div>
 
-          {/* Title overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-5">
+          {/* Bottom: date + title */}
+          <div className="relative">
             <p className="font-space-mono text-xs tracking-widest mb-1" style={{ color: 'var(--secondary)' }}>
               {day.label}
             </p>
-            <h3 className="font-playfair text-xl sm:text-2xl font-bold" style={{ color: '#f5f0e8' }}>
+            <h3 className="font-playfair text-xl sm:text-2xl font-bold leading-tight" style={{ color: '#f5f0e8' }}>
               {day.title}
             </h3>
           </div>
         </div>
 
-        {/* Activity preview (closed state) */}
+        {/* ── Collapsed preview ── */}
         {!isOpen && (
           <div className="px-5 py-4 flex items-center justify-between">
             <p className="text-sm" style={{ color: 'var(--muted)' }}>
               {day.activities.length} {day.activities.length === 1 ? 'actividad' : 'actividades'}
             </p>
             <div className="flex items-center gap-2">
-              <span className="font-space-mono text-xs" style={{ color: 'var(--muted)' }}>
-                Ver plan
-              </span>
+              <span className="font-space-mono text-xs" style={{ color: 'var(--muted)' }}>Ver plan</span>
               <div
                 className="w-6 h-6 rounded-full flex items-center justify-center"
                 style={{ background: 'rgba(232,98,42,0.15)', color: 'var(--primary)' }}
@@ -182,7 +187,7 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
           </div>
         )}
 
-        {/* Expanded content */}
+        {/* ── Expanded content ── */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -226,7 +231,7 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
                   ))}
                 </div>
 
-                {/* Mini map — OpenStreetMap, sin API key */}
+                {/* Mini map */}
                 <div className="mt-6 rounded-xl overflow-hidden" style={{ height: '200px', border: '1px solid var(--border)' }}>
                   <iframe
                     src={mapsUrl}
@@ -248,7 +253,6 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
                       <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
                         className="font-space-mono text-[10px]"
                         style={{ color: 'var(--secondary)' }}
                       >
@@ -262,7 +266,7 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
                     onChange={(e) => handleNotesChange(e.target.value)}
                     onBlur={() => setSaved(true)}
                     placeholder="Añade tus notas para este día..."
-                    className="w-full rounded-xl p-3 text-sm font-inter transition-all duration-200 outline-none min-h-[80px]"
+                    className="w-full rounded-xl p-3 text-sm font-inter outline-none min-h-[80px] transition-all duration-200"
                     style={{
                       background: 'rgba(255,255,255,0.04)',
                       border: '1px solid var(--border)',
