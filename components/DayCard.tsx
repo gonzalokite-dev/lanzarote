@@ -63,7 +63,9 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
 
   const hasFilterMatch = activeFilter === 'all' || day.activities.some((a) => a.category === activeFilter);
 
-  const mapsUrl = `https://www.google.com/maps/embed/v1/view?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ''}&center=${day.coordinates.lat},${day.coordinates.lng}&zoom=13&maptype=satellite`;
+  const pad = 0.04;
+  const { lat, lng } = day.coordinates;
+  const mapsUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - pad},${lat - pad},${lng + pad},${lat + pad}&layer=mapnik&marker=${lat},${lng}`;
 
   return (
     <motion.div
@@ -224,35 +226,17 @@ export default function DayCard({ day, side, activeFilter, isHighlighted }: Prop
                   ))}
                 </div>
 
-                {/* Mini map */}
-                {process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ? (
-                  <div className="mt-6 rounded-xl overflow-hidden" style={{ height: '200px' }}>
-                    <iframe
-                      src={mapsUrl}
-                      width="100%"
-                      height="200"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title={`Mapa ${day.title}`}
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="mt-6 rounded-xl flex items-center justify-center"
-                    style={{ height: '180px', background: 'rgba(255,255,255,0.03)', border: '1px dashed var(--border)' }}
-                  >
-                    <div className="text-center">
-                      <p className="font-space-mono text-xs" style={{ color: 'var(--muted)' }}>
-                        {day.coordinates.lat.toFixed(4)}°N · {Math.abs(day.coordinates.lng).toFixed(4)}°W
-                      </p>
-                      <p className="font-space-mono text-[10px] mt-1" style={{ color: 'var(--muted)', opacity: 0.5 }}>
-                        Añade NEXT_PUBLIC_GOOGLE_MAPS_KEY para ver el mapa
-                      </p>
-                    </div>
-                  </div>
-                )}
+                {/* Mini map — OpenStreetMap, sin API key */}
+                <div className="mt-6 rounded-xl overflow-hidden" style={{ height: '200px', border: '1px solid var(--border)' }}>
+                  <iframe
+                    src={mapsUrl}
+                    width="100%"
+                    height="200"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    title={`Mapa ${day.title}`}
+                  />
+                </div>
 
                 {/* Notes */}
                 <div className="mt-6">

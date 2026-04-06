@@ -25,10 +25,8 @@ const locations = [
 ];
 
 export default function MapSection() {
-  const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
-  const mapSrc = mapsKey
-    ? `https://www.google.com/maps/embed/v1/view?key=${mapsKey}&center=${HOTEL_COORDS.lat},${HOTEL_COORDS.lng}&zoom=11&maptype=satellite`
-    : '';
+  // OpenStreetMap — sin API key, gratis
+  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=-14.05,28.75,-13.30,29.25&layer=mapnik`;
 
   return (
     <section id="map" className="py-16 sm:py-24 px-4" style={{ background: 'var(--surface)' }}>
@@ -54,7 +52,7 @@ export default function MapSection() {
           </motion.h2>
         </div>
 
-        {/* Map embed */}
+        {/* Map embed — OpenStreetMap, sin API key */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -62,34 +60,14 @@ export default function MapSection() {
           className="grad-border rounded-2xl overflow-hidden mb-8"
           style={{ height: '420px' }}
         >
-          {mapsKey ? (
-            <iframe
-              src={mapSrc}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Mapa de Lanzarote"
-            />
-          ) : (
-            <div
-              className="w-full h-full flex flex-col items-center justify-center gap-4"
-              style={{ background: 'var(--card)' }}
-            >
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'var(--muted)' }}>
-                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-                <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
-              </svg>
-              <p className="font-space-mono text-sm" style={{ color: 'var(--muted)' }}>
-                29.0157°N · 13.4982°W — Lanzarote, Canarias
-              </p>
-              <p className="font-space-mono text-xs text-center max-w-xs" style={{ color: 'var(--muted)', opacity: 0.6 }}>
-                Configura NEXT_PUBLIC_GOOGLE_MAPS_KEY para ver el mapa interactivo
-              </p>
-            </div>
-          )}
+          <iframe
+            src={mapSrc}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            title="Mapa de Lanzarote"
+          />
         </motion.div>
 
         {/* Location cards */}
