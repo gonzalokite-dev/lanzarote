@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Lanzarote '26 · Gonzalo & Paula",
+  title: "Lanzaroute '26 · Gonzalo & Paula",
   description: '7 días de volcanes, playas y gastronomía. Abril 19–25, 2026.',
   openGraph: {
-    title: "Lanzarote '26 · Gonzalo & Paula",
+    title: "Lanzaroute '26 · Gonzalo & Paula",
     description: '7 días de volcanes, playas y gastronomía. Abril 19–25, 2026.',
     images: [
       {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Lanzarote '26 · Gonzalo & Paula",
+    title: "Lanzaroute '26 · Gonzalo & Paula",
     description: '7 días de volcanes, playas y gastronomía. Abril 19–25, 2026.',
   },
 };

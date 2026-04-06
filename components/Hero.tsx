@@ -145,7 +145,7 @@ export default function Hero() {
           }}
         >
           Lanza
-          <span style={{ color: 'var(--primary)' }}>rote</span>
+          <span style={{ color: 'var(--primary)' }}>route</span>
         </motion.h1>
 
         <motion.p

@@ -48,7 +48,7 @@ export default function Navigation({ activeFilter, setActiveFilter, isDark, togg
               <circle cx="14" cy="19" r="2" fill="#2dd4bf"/>
             </svg>
             <span className="font-space-mono text-sm font-bold tracking-widest" style={{ color: 'var(--text)' }}>
-              LZT <span style={{ color: 'var(--primary)' }}>'26</span>
+              LANZAROUTE <span style={{ color: 'var(--primary)' }}>'26</span>
             </span>
           </div>
 
